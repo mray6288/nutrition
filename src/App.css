@@ -48,3 +48,16 @@
 .add-button {
   align-items: right;
 }
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  text-align: right;
+}
+
+table, th, td {
+   border: 1px solid black;
+   padding: 0px 3px 0px 3px;
+}
