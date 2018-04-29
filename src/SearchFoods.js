@@ -5,7 +5,7 @@ const SearchFoods = (props) => {
 
 	return (
 	<form onSubmit={props.submitSearch}>
-		Food Name: <input type='textbox' name='search_term'/>
+		Find Food: <input type='textbox' name='search_term' onChange={props.onChange}/>
 		<input type='submit'/>
 	</form>
 	)

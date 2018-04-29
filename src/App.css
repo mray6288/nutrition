@@ -28,11 +28,23 @@
 }
 
 .food-search {
-  width: 66%;
+  width: 63%;
   float: left;
 }
 
 .menu {
-  width: 33%;
+  width: 35%;
   float: right;
+  min-height: 1000px;
+  border: 2px solid blue;
+  margin-right: 1%;
+  background-color: #eef
+}
+
+.food {
+  text-align: left;
+}
+
+.add-button {
+  align-items: right;
 }

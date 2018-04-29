@@ -9,10 +9,13 @@ const Food = (props) => {
 	if (name.includes('gtin')){
 		name = name.substring(0, name.indexOf(', gtin'))
 	}
+	if (name.length > 96){
+		name = name.slice(0, 91) + ' . . .'
+	}
 
 	return <li className='food'>
 	{name}
-	<button onClick={props.actionItem} value={props.food.name}>{props.actionType}</button> </li>
+	<button className='add-button' onClick={props.addItem} value={props.food.ndbno}>Add Food >>></button> <br/></li>
 
 
 }

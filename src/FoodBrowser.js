@@ -6,7 +6,7 @@ import Food from './Food'
 const FoodBrowser = (props) => {
 
 	let allFoods = props.foods.map(food => {
-		return <Food food={food} actionItem={props.addItem} actionType='Add Food >>>'/>
+		return <Food food={food} addItem={props.addItem} />
 	})
 
 	return (

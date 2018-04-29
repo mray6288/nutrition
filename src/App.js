@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import FoodBrowser from './FoodBrowser'
@@ -15,12 +14,33 @@ class App extends Component {
     this.state = {
       foods: [],
       menuItems: [],
-      searchTerm: 'peanut'
+      searchTerm: '',
+
+    }
+  }
+
+  saveFoods = (foods) => {
+    if (foods.list){
+      this.setState({foods:foods.list.item})
+    } else {
+      alert(`No Foods Found For "${this.state.searchTerm}" - please try again`)
     }
   }
 
   fetchFoods = () => {
-    let url = `https:/\/api.nal.usda.gov/ndb/search?format=json&q=${this.state.searchTerm}&api_key=${APIKEY}`
+    let url = `https://api.nal.usda.gov/ndb/search?format=json&q=${this.state.searchTerm}&api_key=${APIKEY}`
+    fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+
+    }).then(r=>r.json()).then(json=>this.saveFoods(json))
+    
+  }
+
+  fetchNutrition = (id) => {
+    let url = `https://api.nal.usda.gov/ndb/reports?format=json&ndbno=${id}&api_key=${APIKEY}`
     console.log(url)
     fetch(url, {
       headers: {
@@ -28,30 +48,33 @@ class App extends Component {
         'Accept': 'application/json',
       }
 
-    }).then(r=>r.json()).then(json=>this.setState({foods:json.list.item}))
+    }).then(r=>r.json()).then(json=>this.setState({menuItems: [...this.state.menuItems, json.report.food]}))
     
+  }
+
+  onChange = (e) => {
+    this.setState({
+      searchTerm: e.target.value
+    })
   }
 
   submitSearch = (e) => {
     e.preventDefault()
     // this.setState({searchTerm: e.target.search_term.value})
-    this.state.searchTerm = e.target.search_term.value
-    console.log('Search Term:', this.state.searchTerm)
+    
     this.fetchFoods()
-    console.log('Search Term:', this.state)
     e.target.reset()
   }
 
   addItem = (e) => {
     e.preventDefault()
-    let item = this.state.foods.find(food => food.name === e.target.value)
-    this.setState({menuItems: [...this.state.menuItems, item]})
+    this.fetchNutrition(e.target.value)
   }
 
   deleteItem = (e) => {
     e.preventDefault()
-    let item = this.state.foods.find(food => food.name === e.target.value)
-    this.setState({menuItems: [...this.state.menuItems.filter(i => i !== item)]})
+    let item = e.target.value
+    this.setState({menuItems: [...this.state.menuItems.filter(i => i.ndbno !== item)]})
   }
 
 
@@ -63,11 +86,12 @@ class App extends Component {
         </header>
         <br/>
         <div className="food-search">
-          <SearchFoods submitSearch={this.submitSearch}/>
+          <h1>Food Search</h1>
+          <SearchFoods submitSearch={this.submitSearch} onChange={this.onChange}/>
           <FoodBrowser foods={this.state.foods} addItem={this.addItem}/>
           
         </div>
-        <Menu menuItems={this.state.menuItems} deleteItem={this.deleteItem}/>
+        <Menu menuItems={this.state.menuItems} deleteItem={this.deleteItem} />
       </div>
     );
   }
