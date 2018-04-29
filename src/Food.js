@@ -14,7 +14,7 @@ const Food = (props) => {
 	}
 
 	return <li className='food'>
-	{name}
+	{name}   
 	<button className='add-button' onClick={props.addItem} value={props.food.ndbno}>Add Food >>></button> <br/></li>
 
 
