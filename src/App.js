@@ -17,7 +17,12 @@ class App extends Component {
       searchTerm: '',
 
     }
+
+
   }
+
+
+
 
   saveFoods = (foods) => {
     if (foods.list){
@@ -92,6 +97,7 @@ class App extends Component {
           
         </div>
         <Menu menuItems={this.state.menuItems} deleteItem={this.deleteItem} />
+
       </div>
     );
   }
